@@ -39,6 +39,19 @@ app.get('/usuarios', async (req, res) => {
     res.json(data);
 });
 
+app.get('/usuarios/:id', async (req, res) => {
+    const { id } = req.params;
+
+    const { data, error } = await supabase
+        .from('usuarios')
+        .select('*')
+        .eq('id', id)
+        .single();  // O método .single() retorna um único objeto
+
+    if (error) return res.status(400).json({ error: error.message });
+    res.json(data);
+});
+
 app.get('/', (req, res) => {
     res.json({
         message: "Bem-vindo à API de Usuários!",
